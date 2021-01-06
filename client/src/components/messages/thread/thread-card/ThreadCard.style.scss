@@ -1,0 +1,24 @@
+.msg-card {
+  padding: 0.4rem 0.2rem;
+  margin-bottom: 0.5rem;
+  margin-right: 51%;
+  background-color: #ccc;
+  border-radius: 0.2rem;
+  font-size: 0.9rem;
+
+  .msg-card-img {
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+  }
+
+  small {
+    opacity: 0.9;
+  }
+}
+
+.msg-card.right {
+  margin-right: 0;
+  margin-left: 51%;
+  text-align: right;
+}

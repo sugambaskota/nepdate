@@ -1,0 +1,25 @@
+.upload {
+  height: 7rem;
+  border: 1px solid #000;
+  border-radius: 0.3rem;
+  margin-top: 1rem;
+  display: grid;
+  place-content: center;
+
+  i {
+    font-size: 3rem;
+  }
+
+  i.active {
+    color: rgb(36, 126, 36);
+    transform: scale(1.4);
+  }
+
+  .animate {
+    transition: all 0.5s ease;
+  }
+}
+
+.upload:focus {
+  outline: none;
+}

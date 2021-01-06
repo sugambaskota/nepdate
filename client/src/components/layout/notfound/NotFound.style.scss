@@ -1,0 +1,28 @@
+.not-found {
+  text-align: center;
+  margin-top: 1rem;
+  line-height: 1.4;
+
+  .go-back-btn {
+    display: block;
+    margin: 0.8rem auto;
+    padding: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    border-radius: 0.2rem;
+    background: #1c99aa;
+    color: #fff;
+  }
+
+  .go-home-btn {
+    display: inline-block;
+    margin: 0.4rem auto;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 0.2rem;
+    background: #1c99aa;
+    color: #fff;
+  }
+}

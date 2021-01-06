@@ -1,0 +1,60 @@
+.form-text-danger {
+  margin-left: 0.2rem;
+  color: tomato;
+}
+
+.login {
+  max-width: 30rem;
+  margin: auto;
+
+  .login-title {
+    font-size: 1.6rem;
+    color: #1c99aa;
+    text-align: center;
+  }
+
+  .login-form {
+    .form-group {
+      margin: 1.4rem 0;
+
+      .form-group-input {
+        width: 100%;
+        height: 2.4rem;
+        font-size: 1rem;
+        border: 0.1rem solid rgba(0, 0, 0, 0.5);
+        border-radius: 0.2rem;
+        padding-inline-start: 0.6rem;
+        padding-inline-end: 0.6rem;
+      }
+
+      .form-group-input:focus {
+        border: 0.1rem solid #1c99aa;
+        outline: none;
+      }
+
+      .form-group-input.invalid {
+        border: 0.1rem solid tomato;
+      }
+
+      .form-group-button {
+        border: none;
+        cursor: pointer;
+        background-color: #1c99aa;
+        border-radius: 0.2rem;
+        height: 2.4rem;
+        font-size: 1rem;
+        color: #fff;
+        padding: 0 1.5rem;
+      }
+
+      .form-group-button:focus {
+        outline: none;
+      }
+
+      .form-group-button:disabled {
+        opacity: 0.8;
+        cursor: default;
+      }
+    }
+  }
+}

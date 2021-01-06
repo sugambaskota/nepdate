@@ -1,0 +1,28 @@
+.search-title {
+  margin: 0.5rem auto 1.5rem;
+  text-align: center;
+}
+
+.not-found-text {
+  text-align: center;
+}
+
+.search-members-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 1.4rem;
+  justify-content: center;
+}
+
+@media (min-width: 576px) {
+  .search-members-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 824px) {
+  .search-members-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

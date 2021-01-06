@@ -1,0 +1,123 @@
+.edit-profile-container {
+  .intro {
+    border: 1px solid #000;
+    border-radius: 0.3rem;
+  }
+
+  .general-intro {
+    padding: 0.7rem;
+    margin-bottom: 0.8rem;
+
+    .main-image {
+      height: 14rem;
+      padding: 0.2rem;
+      border: 1px solid #000;
+      border-radius: 0.3rem;
+    }
+
+    .main-details {
+      .main-detail-item {
+        margin-top: 0.4rem;
+      }
+    }
+  }
+
+  .more-intro {
+    padding: 0.7rem;
+    margin-bottom: 1rem;
+
+    .more-intro-head {
+      border-bottom: 3px solid lightgray;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+
+      li {
+        cursor: pointer;
+        margin-right: 1.4rem;
+        margin-bottom: -3px;
+      }
+
+      li.active {
+        border-bottom: 3px solid tomato;
+      }
+    }
+
+    .more-intro-content {
+      padding-top: 0.4rem;
+
+      .edit-profile-details-container {
+        .form-group:first-child {
+          margin-top: 0;
+        }
+
+        .form-group {
+          margin: 0.8rem 0;
+
+          .form-label {
+            display: block;
+            margin-bottom: 0.2rem;
+          }
+
+          textarea {
+            display: block;
+            width: 100%;
+            height: auto;
+            padding-inline-start: 0.3rem;
+            font-size: 1.1rem;
+            border: 1px solid #000;
+            border-radius: 0.3rem;
+          }
+
+          input {
+            display: block;
+            width: 100%;
+            max-width: 17rem;
+            height: 2.2rem;
+            padding-inline-start: 0.3rem;
+            font-size: 0.9rem;
+            border: 1px solid #000;
+            border-radius: 0.3rem;
+          }
+
+          .form-item:focus {
+            outline: none;
+          }
+        }
+
+        .submit-btn {
+          display: block;
+          margin-top: 0.5rem;
+          padding: 0.5rem;
+          font-size: 1rem;
+          border: none;
+          border-radius: 0.3rem;
+          background: #1c99aa;
+          color: #fff;
+        }
+
+        .submit-btn:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .edit-profile-container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .general-intro {
+    flex: 0 0 18rem;
+    margin-right: 2rem;
+  }
+
+  .more-intro {
+    flex: 1;
+  }
+}

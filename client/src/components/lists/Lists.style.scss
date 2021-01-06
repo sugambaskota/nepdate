@@ -1,0 +1,38 @@
+.likers-liked-btns {
+  margin-bottom: 1rem;
+  text-align: right;
+
+  button {
+    font-size: 1rem;
+    margin-left: 1rem;
+    padding: 0.4rem;
+    border-radius: 0.2rem;
+    background-color: cadetblue;
+  }
+
+  button:hover {
+    background-color: #0c8286;
+  }
+
+  button.active {
+    background-color: #0c8286;
+  }
+}
+
+.likers-liked-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 1rem;
+}
+
+@media (min-width: 576px) {
+  .likers-liked-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 824px) {
+  .likers-liked-content {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

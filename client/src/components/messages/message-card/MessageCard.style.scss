@@ -1,0 +1,26 @@
+.message-card {
+  display: flex;
+  flex-flow: row nowrap;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: rgb(233, 233, 233);
+  border-radius: 0.5rem;
+
+  .message-card-image {
+    height: 4rem;
+    width: 4rem;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .message-card-content {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    margin-left: 0.8rem;
+
+    .msg-text {
+      font-size: 0.9rem;
+    }
+  }
+}

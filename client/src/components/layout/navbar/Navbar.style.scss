@@ -1,0 +1,204 @@
+.navbar {
+  height: 3rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  width: 100%;
+
+  .brand {
+    height: 100%;
+
+    .nav-toggle-button {
+      display: none;
+    }
+
+    .brand-logo {
+      color: #c9c4c4;
+      margin: 0 0.8rem;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+
+      .brand-colored {
+        color: cadetblue;
+      }
+    }
+  }
+}
+
+.mobile-nav {
+  display: none;
+}
+
+.links-right {
+  display: flex;
+  height: 100%;
+
+  .links-right-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+
+    a {
+      color: #fff;
+      padding: 0 0.8rem;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    a:hover {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  .links-right-item.active {
+    a {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  .dropdown {
+    position: relative;
+
+    .dropbtn {
+      height: 100%;
+      padding: 0 0.8rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        height: 2rem;
+        width: 2rem;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+
+      i {
+        color: #fff;
+      }
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      overflow: hidden;
+      background-color: #cccccc;
+      border-top-left-radius: 0.3rem;
+      border-bottom-left-radius: 0.3rem;
+      z-index: 101;
+
+      li {
+        a {
+          display: block;
+          width: 100%;
+          padding: 0.2rem 1.8rem;
+        }
+
+        a:hover {
+          background-color: cadetblue;
+        }
+      }
+    }
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+}
+
+/* media queries to make navbar mobile friendly */
+@media (max-width: 450px) {
+  .navbar {
+    .brand {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+
+      .nav-toggle-button {
+        color: #c9c4c4;
+        height: 100%;
+        display: inline-block;
+        font-size: 1.6rem;
+        padding: 0.3rem 0.4rem 0 0.4rem;
+        cursor: pointer;
+      }
+
+      .brand-logo {
+        margin: 0 0.2rem;
+      }
+    }
+
+    .links-right {
+      display: none;
+    }
+  }
+
+  .mobile-nav.open {
+    display: block;
+    position: fixed;
+    top: 0;
+    z-index: 101;
+    height: 100vh;
+    width: 60vw;
+    background-color: rgba(0, 0, 0, 0.8);
+
+    .mobile-nav-close-btn {
+      background: #fff;
+      border: none;
+      outline: none;
+      height: 2rem;
+      width: 2rem;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      position: absolute;
+      top: 0.5rem;
+      right: 1rem;
+      cursor: pointer;
+    }
+
+    .links-right {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: flex-start;
+      align-items: stretch;
+      margin-top: 3rem;
+
+      .links-right-item a {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 0.8rem 0;
+      }
+    }
+
+    .dropdown {
+      padding: 0.8rem 0;
+
+      .dropbtn {
+        height: auto;
+      }
+
+      .dropdown-content {
+        position: static;
+        border-radius: 0.3rem;
+        margin: 0.8rem auto;
+        width: 100%;
+        max-width: 10rem;
+
+        li {
+          text-align: center;
+        }
+      }
+    }
+  }
+}

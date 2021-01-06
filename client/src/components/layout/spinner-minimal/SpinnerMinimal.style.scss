@@ -1,0 +1,14 @@
+.spinner {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__image {
+    height: 6rem;
+    width: 6rem;
+    border-radius: 0.3rem;
+    overflow: hidden;
+  }
+}

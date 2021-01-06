@@ -1,0 +1,51 @@
+.msg {
+  max-width: 40rem;
+  margin: auto;
+}
+
+.msg-history {
+  height: 75vh;
+  overflow-y: scroll;
+  margin-bottom: 0.8rem;
+  border-radius: 0.2rem;
+}
+
+.msg-form {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.msg-msg {
+  height: 2.4rem;
+  flex: 1;
+  border: 0.1rem solid gray;
+  border-radius: 0.2rem;
+  padding-inline-start: 0.5rem;
+  font-size: 0.9rem;
+  margin: 0 0.5rem 0.5rem 0;
+}
+
+.msg-msg:focus {
+  outline: none;
+}
+
+.msg-btn-submit {
+  border: none;
+  cursor: pointer;
+  background-color: #1c99aa;
+  border-radius: 0.2rem;
+  height: 2.4rem;
+  font-size: 1rem;
+  color: #fff;
+  padding: 0 1.5rem;
+}
+
+.msg-btn-submit:focus {
+  outline: none;
+}
+
+.msg-btn-submit:disabled {
+  opacity: 0.8;
+  cursor: default;
+}

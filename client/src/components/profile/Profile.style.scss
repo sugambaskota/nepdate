@@ -1,0 +1,129 @@
+@import '~react-image-gallery/styles/scss/image-gallery.scss';
+
+.not-found-text {
+  text-align: center;
+}
+
+.click-here {
+  color: blueviolet;
+}
+
+.click-here:hover {
+  text-decoration: underline;
+}
+
+.profile-heading {
+  font-size: 1.2rem;
+  margin-bottom: 0.2rem;
+  height: 1.7rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .like-msg-btns {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .liked-btn {
+    height: 1.7rem;
+    padding: 0 0.5rem;
+    border-radius: 0.2rem;
+    margin-right: 1rem;
+    background-color: rgb(57, 197, 57);
+  }
+
+  .liked-btn-loading {
+    height: 1.7rem;
+    padding: 0 0.5rem;
+    margin-right: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profile-edit-btn,
+  .msg-user-btn {
+    height: 1.7rem;
+    width: 1.7rem;
+    margin-right: 0.1rem;
+    border: 1px solid #000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    i {
+      font-size: 1rem;
+    }
+  }
+}
+
+.profile-container {
+  .intro {
+    border: 1px solid #000;
+    border-radius: 0.3rem;
+  }
+
+  .general-intro {
+    padding: 0.7rem;
+    margin-bottom: 0.8rem;
+
+    .main-image {
+      height: 14rem;
+      padding: 0.2rem;
+      border: 1px solid #000;
+      border-radius: 0.3rem;
+    }
+
+    .main-details {
+      .main-detail-item {
+        margin-top: 0.4rem;
+      }
+    }
+  }
+
+  .more-intro {
+    padding: 0.7rem;
+
+    .more-intro-head {
+      border-bottom: 3px solid lightgray;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+
+      li {
+        cursor: pointer;
+        margin-bottom: -3px;
+      }
+
+      li.active {
+        border-bottom: 3px solid tomato;
+      }
+    }
+
+    .more-intro-content {
+      padding-top: 0.4rem;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .profile-container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .general-intro {
+    flex: 0 0 18rem;
+    margin-right: 2rem;
+  }
+
+  .more-intro {
+    flex: 1;
+  }
+}

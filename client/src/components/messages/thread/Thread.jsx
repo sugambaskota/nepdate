@@ -1,0 +1,108 @@
+import React, { Fragment, useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import './Thread.style.scss';
+import { getMessageThread, sendMessage } from '../../../actions/message';
+import Spinner from '../../layout/spinner/Spinner';
+import ThreadCard from './thread-card/ThreadCard';
+
+export const Thread = ({
+  match,
+  message: { thread, loading },
+  auth: { user },
+  getMessageThread,
+  sendMessage,
+}) => {
+  const [chatMsg, setChatMsg] = useState('');
+  const scrollDivRef = useRef(null);
+
+  useEffect(() => {
+    getMessageThread(match.params.user_id);
+  }, [getMessageThread, match.params.user_id]);
+
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     getMessageThread(match.params.user_id);
+  //   }, 5000);
+  //   return () => {
+  //     clearInterval()
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [thread]);
+
+  const scrollToBottom = () => {
+    scrollDivRef.current &&
+      scrollDivRef.current.scrollIntoView({ behaviour: 'smooth' });
+  };
+
+  const renderCards = () => {
+    return (
+      thread &&
+      thread.map((msg) => <ThreadCard key={msg.id} msg={msg} user={user} />)
+    );
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    sendMessage(match.params.user_id, chatMsg);
+    setChatMsg('');
+  };
+
+  const msgForm = (
+    <form className='msg-form' onSubmit={onSubmit}>
+      <input
+        type='text'
+        className='msg-msg'
+        value={chatMsg}
+        placeholder='Type message here...'
+        onChange={(e) => setChatMsg(e.target.value)}
+      />
+      <button
+        type='submit'
+        disabled={!chatMsg || !chatMsg.length > 0}
+        className='msg-btn-submit'
+      >
+        Send
+      </button>
+    </form>
+  );
+
+  return loading ? (
+    <Spinner />
+  ) : (
+    <Fragment>
+      <div className='msg'>
+        <div className='msg-history-holder'>
+          <div className='msg-history'>
+            {renderCards()}
+            <div ref={scrollDivRef}></div>
+          </div>
+        </div>
+        {msgForm}
+      </div>
+    </Fragment>
+  );
+};
+
+Thread.propTypes = {
+  message: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  getMessageThread: PropTypes.func.isRequired,
+  sendMessage: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  message: state.message,
+  auth: state.auth,
+});
+
+const mapDispatchToProps = {
+  getMessageThread,
+  sendMessage,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Thread);

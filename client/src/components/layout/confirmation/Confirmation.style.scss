@@ -1,0 +1,67 @@
+.confirmation-container {
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  display: none;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.confirmation-container.open {
+  display: flex;
+}
+
+.confirmation {
+  border-radius: 0.5rem;
+  padding: 1.4rem;
+  margin-top: 4rem;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.confirmation-text {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.confirmation-actions {
+  width: 100%;
+  max-width: 14rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.confirmation-button {
+  height: 2.5rem;
+  width: 5rem;
+  margin: 1rem 1rem 0;
+  padding: 0.4rem;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 0.2rem;
+}
+
+.confirmation-button-yes {
+  background-color: lightgreen;
+}
+
+.confirmation-button-no {
+  background-color: lightsalmon;
+}
+
+@media (max-width: 450px) {
+  .confirmation {
+    width: 80%;
+  }
+}
