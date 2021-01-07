@@ -1,12 +1,14 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const path = require('path');
 
 const app = express();
 
 //express middlewares setup
 app.use(express.json({ extended: false }));
+app.use(cors());
 
 //connect to db
 mongoose
@@ -19,9 +21,6 @@ mongoose
   .then(() => console.log('Database connected!'))
   .catch((err) => console.log('Error connecting to database!'));
 
-//setup static directory
-app.use(express.static(path.resolve(__dirname, 'public')));
-
 //routes setup
 app.use('/api/users', require('./routes/users'));
 app.use('/api/auth', require('./routes/auth'));
@@ -29,6 +28,18 @@ app.use('/api/profile', require('./routes/profile'));
 app.use('/api/like', require('./routes/like'));
 app.use('/api/message', require('./routes/message'));
 app.use('/api/photos', require('./routes/photo'));
+
+//serve static assests in prod
+if (process.env.NODE_ENV === 'production') {
+  //set static folder
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
+//handle exception routes
 app.use((req, res) => {
   res.status(404).json({
     errors: [
@@ -60,7 +71,9 @@ app.use((err, req, res, next) => {
   }
 });
 
+const PORT = process.env.PORT || 5000;
+
 //start server
-app.listen(process.env.PORT || 5000, () => {
-  console.log(`Server running on port ${process.env.PORT}!`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}!`);
 });

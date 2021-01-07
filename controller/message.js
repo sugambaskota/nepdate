@@ -3,7 +3,6 @@ const { validationResult } = require('express-validator');
 
 const Message = require('../models/Message');
 const Like = require('../models/Like');
-const getPublicPath = require('../utils/getPublicPath');
 const { messageForOutDto, messagesForOutDto } = require('../dto/message_dto');
 
 exports.getMessages = async (req, res) => {
@@ -18,7 +17,7 @@ exports.getMessages = async (req, res) => {
       })
         .populate('sender')
         .populate('receiver');
-      const messagesForOut = messagesForOutDto(messages, getPublicPath(req));
+      const messagesForOut = messagesForOutDto(messages);
       return res.json(messagesForOut);
     }
     let messages = await Message.find({
@@ -26,7 +25,7 @@ exports.getMessages = async (req, res) => {
     })
       .populate('sender')
       .populate('receiver');
-    const messagesForOut = messagesForOutDto(messages, getPublicPath(req));
+    const messagesForOut = messagesForOutDto(messages);
     res.json(messagesForOut);
   } catch (err) {
     console.error(err.message);
@@ -54,7 +53,7 @@ exports.getMessagesThread = async (req, res) => {
       .sort({ date: 1 })
       .populate('sender')
       .populate('receiver');
-    const threadForOut = messagesForOutDto(thread, getPublicPath(req));
+    const threadForOut = messagesForOutDto(thread);
     res.json(threadForOut);
   } catch (err) {
     console.error(err.message);
@@ -163,7 +162,7 @@ exports.getMessagesThreads = async (req, res) => {
       totalPages,
       totalCount,
     });
-    const threadsForOut = messagesForOutDto(threads, getPublicPath(req));
+    const threadsForOut = messagesForOutDto(threads);
     res.setHeader('Pagination', paginationInfo);
 
     res.json(threadsForOut);
@@ -224,7 +223,7 @@ exports.sendMessage = async (req, res) => {
       .populate('sender')
       .populate('receiver');
 
-    const messageForOut = messageForOutDto(newMessage, getPublicPath(req));
+    const messageForOut = messageForOutDto(newMessage);
 
     res.json(messageForOut);
   } catch (err) {

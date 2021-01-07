@@ -1,10 +1,10 @@
 const { userForOutDto } = require('./user_dto');
 
-exports.messageForOutDto = (message, publicPath) => {
+exports.messageForOutDto = (message) => {
   const messageForOut = {
     id: message._id,
-    sender: userForOutDto(message.sender, publicPath),
-    receiver: userForOutDto(message.receiver, publicPath),
+    sender: userForOutDto(message.sender),
+    receiver: userForOutDto(message.receiver),
     text: message.text,
     date: message.date,
     isRead: message.isread,
@@ -13,9 +13,9 @@ exports.messageForOutDto = (message, publicPath) => {
   return messageForOut;
 };
 
-exports.messagesForOutDto = (messages, publicPath) => {
+exports.messagesForOutDto = (messages) => {
   const messagesForOut = messages.map((message) => {
-    return this.messageForOutDto(message, publicPath);
+    return this.messageForOutDto(message);
   });
   return messagesForOut;
 };

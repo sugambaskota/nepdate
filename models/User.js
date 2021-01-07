@@ -37,7 +37,8 @@ const UserSchema = new mongoose.Schema({
   },
   dp: {
     type: String,
-    default: 'user.png',
+    default:
+      'https://res.cloudinary.com/df0aeaazn/image/upload/v1610002142/user_zjknbu.png',
   },
   datejoined: {
     type: Date,

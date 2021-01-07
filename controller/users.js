@@ -3,13 +3,12 @@ const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 
 const User = require('../models/User');
-const getPublicPath = require('../utils/getPublicPath');
 const { userForOutDto, usersForOutDto } = require('../dto/user_dto');
 
 exports.getUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.user_id);
-    let userForOut = userForOutDto(user, getPublicPath(req));
+    let userForOut = userForOutDto(user);
     res.json(userForOut);
   } catch (err) {
     console.error(err.message);
@@ -57,7 +56,7 @@ exports.getUsers = async (req, res) => {
       totalPages,
       totalCount,
     });
-    let usersForOut = usersForOutDto(users, getPublicPath(req));
+    let usersForOut = usersForOutDto(users);
     res.setHeader('Pagination', paginationInfo);
     res.json(usersForOut);
   } catch (err) {
@@ -142,7 +141,7 @@ exports.searchUsers = async (req, res) => {
       totalCount,
     });
 
-    let usersForOut = usersForOutDto(users, getPublicPath(req));
+    let usersForOut = usersForOutDto(users);
     res.setHeader('Pagination', paginationInfo);
     res.json(usersForOut);
   } catch (err) {

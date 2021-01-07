@@ -3,12 +3,11 @@ const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 
 const User = require('../models/User');
-const getPublicPath = require('../utils/getPublicPath');
 const { userForOutDto } = require('../dto/user_dto');
 
 const getCurrentUser = async (req, res) => {
   try {
-    let user = userForOutDto(req.user, getPublicPath(req));
+    let user = userForOutDto(req.user);
     res.json({
       user,
     });
@@ -106,7 +105,7 @@ const updateCurrentUser = async (req, res) => {
 
     let user = await User.findById(req.user._id);
 
-    let userForOut = userForOutDto(user, getPublicPath(req));
+    let userForOut = userForOutDto(user);
     res.json({
       user: userForOut,
     });

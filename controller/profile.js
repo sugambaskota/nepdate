@@ -3,7 +3,6 @@ const { validationResult } = require('express-validator');
 const Profile = require('../models/Profile');
 const Photo = require('../models/Photo');
 const Like = require('../models/Like');
-const getPublicPath = require('../utils/getPublicPath');
 const { profileForOutDto } = require('../dto/profile_dto');
 
 const getCurrentUserProfile = async (req, res) => {
@@ -24,7 +23,7 @@ const getCurrentUserProfile = async (req, res) => {
     profile.photos = await Photo.find({
       owner: req.user.id,
     });
-    let profileForOut = profileForOutDto(profile, getPublicPath(req));
+    let profileForOut = profileForOutDto(profile);
     res.json(profileForOut);
   } catch (err) {
     console.error(err.message);
@@ -79,7 +78,7 @@ const getProfileByUserId = async (req, res) => {
       owner: req.params.user_id,
     });
 
-    let profileForOut = profileForOutDto(profile, getPublicPath(req));
+    let profileForOut = profileForOutDto(profile);
     res.json(profileForOut);
   } catch (err) {
     console.error(err.message);

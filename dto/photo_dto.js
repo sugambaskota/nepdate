@@ -1,7 +1,7 @@
-const photosForOutDto = (photos, publicPath) => {
+const photosForOutDto = (photos) => {
   const photosForOut = photos.map((photo) => {
     return {
-      path: publicPath + photo.name,
+      path: photo.path,
     };
   });
   return photosForOut;

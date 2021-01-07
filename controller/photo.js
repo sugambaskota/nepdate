@@ -1,10 +1,6 @@
-const sharp = require('sharp');
-const path = require('path');
-const fs = require('fs');
-
 const Photo = require('../models/Photo');
 const User = require('../models/User');
-const getPublicPath = require('../utils/getPublicPath');
+const cloudinary = require('../config/cloudinary');
 const { photosForOutDto } = require('../dto/photo_dto');
 
 const getPhotosOfCurrentUser = async (req, res) => {
@@ -12,7 +8,7 @@ const getPhotosOfCurrentUser = async (req, res) => {
     const photos = await Photo.find({
       owner: req.user.id,
     });
-    let photosForOut = photosForOutDto(photos, getPublicPath(req));
+    let photosForOut = photosForOutDto(photos);
     res.json(photosForOut);
   } catch (err) {
     console.error(err.message);
@@ -31,7 +27,7 @@ const getPhotosByUserId = async (req, res) => {
     const photos = await Photo.find({
       owner: req.params.user_id,
     });
-    let photosForOut = photosForOutDto(photos, getPublicPath(req));
+    let photosForOut = photosForOutDto(photos);
     res.json(photosForOut);
   } catch (err) {
     console.error(err.message);
@@ -48,21 +44,8 @@ const getPhotosByUserId = async (req, res) => {
 const setPhotoAsMain = async (req, res) => {
   try {
     const photoPath = req.query.path;
-    const photoName = photoPath.replace(getPublicPath(req), '');
-    const exists = fs.existsSync(
-      path.resolve(__dirname, '..', 'public', 'uploads', photoName)
-    );
-    if (!exists) {
-      return res.status(400).json({
-        errors: [
-          {
-            msg: 'Photo not found!',
-          },
-        ],
-      });
-    }
     await User.findByIdAndUpdate(req.user.id, {
-      dp: photoName,
+      dp: photoPath,
     });
     res.sendStatus(200);
   } catch (err) {
@@ -80,8 +63,7 @@ const setPhotoAsMain = async (req, res) => {
 const deletePhoto = async (req, res) => {
   try {
     const photoPath = req.query.path;
-    const photoName = photoPath.replace(getPublicPath(req), '');
-    if (req.user.dp === photoName) {
+    if (req.user.dp === photoPath) {
       return res.status(400).json({
         errors: [
           {
@@ -90,25 +72,18 @@ const deletePhoto = async (req, res) => {
         ],
       });
     }
-    const exists = fs.existsSync(
-      path.resolve(__dirname, '..', 'public', 'uploads', photoName)
-    );
-    if (!exists) {
-      return res.status(400).json({
-        errors: [
-          {
-            msg: 'Photo not found!',
-          },
-        ],
-      });
-    }
+
     await Photo.deleteOne({
-      name: photoName,
+      path: photoPath,
     });
-    fs.unlinkSync(
-      path.resolve(__dirname, '..', 'public', 'uploads', photoName)
-    );
-    res.sendStatus(200);
+
+    // delete photo from cloudinary
+    let photoName = photoPath.split('/');
+    photoName = photoName[photoName.length - 1];
+    let publicId = photoName.slice(0, -4);
+    cloudinary.uploader.destroy(publicId, (error, result) => {
+      res.sendStatus(200);
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({
@@ -124,21 +99,16 @@ const deletePhoto = async (req, res) => {
 const uploadPhoto = async (req, res) => {
   try {
     if (req.file) {
-      const { filename } = req.file;
-      await sharp(req.file.path)
-        .rotate()
-        .resize(800, 800)
-        .toFile(path.resolve(req.file.destination, '..', filename));
-      fs.unlinkSync(req.file.path);
+      const { path } = req.file;
       const photo = new Photo({
         owner: req.user._id,
-        name: filename,
+        path,
       });
       await photo.save();
       const photos = await Photo.find({
         owner: req.user.id,
       });
-      let photosForOut = photosForOutDto(photos, getPublicPath(req));
+      let photosForOut = photosForOutDto(photos);
       res.json(photosForOut);
     } else {
       res.status(400).json({
@@ -165,22 +135,17 @@ const uploadPhotos = async (req, res) => {
   try {
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
-        const { filename } = file;
-        await sharp(file.path)
-          .rotate()
-          .resize(800, 800)
-          .toFile(path.resolve(file.destination, '..', filename));
-        fs.unlinkSync(file.path);
+        const { path } = file;
         const photo = new Photo({
           owner: req.user.id,
-          name: filename,
+          path,
         });
         await photo.save();
       }
       const photos = await Photo.find({
         owner: req.user.id,
       });
-      let photosForOut = photosForOutDto(photos, getPublicPath(req));
+      let photosForOut = photosForOutDto(photos);
       res.json(photosForOut);
     } else {
       res.status(400).json({

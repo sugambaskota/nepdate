@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const multer = require('multer');
-const fs = require('fs');
-const path = require('path');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 const isAuth = require('../middlewares/isAuth');
+const cloudinary = require('../config/cloudinary');
 const {
   getPhotosOfCurrentUser,
   getPhotosByUserId,
@@ -13,23 +13,15 @@ const {
   uploadPhotos,
 } = require('../controller/photo');
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const exists = fs.existsSync(
-      path.resolve(__dirname, '..', 'public', 'uploads', 'temp')
-    );
-
-    if (!exists) {
-      fs.mkdirSync(`${__dirname}/../public/uploads/temp`, { recursive: true });
-    }
-    cb(null, 'public/uploads/temp');
-  },
-  filename: (req, file, cb) => {
-    const name =
-      Date.now() +
-      '-' +
-      file.originalname.toLocaleLowerCase().split(' ').join('-');
-    cb(null, name);
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    format: async (req, file) => 'png',
+    transformation: {
+      width: 250,
+      height: 250,
+      crop: 'fill',
+    },
   },
 });
 
@@ -81,7 +73,7 @@ router.post('/upload/single', isAuth, upload.single('photo'), uploadPhoto);
 router.post(
   '/upload/multiple',
   isAuth,
-  upload.array('photos', 10),
+  upload.array('photos', 5),
   uploadPhotos
 );
 

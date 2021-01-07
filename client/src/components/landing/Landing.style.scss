@@ -1,12 +1,64 @@
 .landing-container {
-  min-height: 100vh;
-  display: flex;
-  flex-flow: column wrap;
-  justify-content: center;
-  align-items: center;
-  margin-top: -10rem;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  background: url('./img/love.jpg') no-repeat center center/cover;
 }
 
-.welcome-text {
+.dark-overlay {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.landing-container-inner {
+  color: #fff;
+  height: 100%;
+  width: 80%;
+  margin: auto;
+  padding-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+}
+
+.landing-title {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.landing-desc {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.auth-btn {
+  display: inline-block;
+  padding: 0.4rem 1.3rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  margin: 0 0.8rem 0.8rem 0;
+  transition: opacity 0.2s ease-in;
+  outline: none;
+}
+
+.auth-btn:hover {
+  opacity: 0.8;
+}
+
+.register-btn {
+  background-color: seagreen;
+  color: whitesmoke;
+}
+
+.login-btn {
+  background-color: #fff;
+  color: #000;
 }

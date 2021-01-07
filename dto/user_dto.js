@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-const userForOutDto = (user, publicPath) => {
+const userForOutDto = (user) => {
   return {
     id: user._id,
     role: user.role,
@@ -11,14 +11,14 @@ const userForOutDto = (user, publicPath) => {
     dob: user.dob,
     age: new Date().getFullYear() - moment(user.dob).year(),
     email: user.email,
-    dp: publicPath + user.dp,
+    dp: user.dp,
     dateJoined: user.datejoined,
     lastActive: user.lastactive,
   };
 };
 
-const usersForOutDto = (users, publicPath) => {
-  const usersForOut = users.map((user) => userForOutDto(user, publicPath));
+const usersForOutDto = (users) => {
+  const usersForOut = users.map((user) => userForOutDto(user));
   return usersForOut;
 };
 

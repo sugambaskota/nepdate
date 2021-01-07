@@ -46,7 +46,7 @@ export const Profile = ({
     if (match.params.user_id) {
       return (
         <div className='like-msg-btns'>
-          <button className='liked-btn'>
+          <button className='liked-btn-info'>
             {profile.liked ? 'Liked' : 'Not liked'}
           </button>
           {like.loading ? (

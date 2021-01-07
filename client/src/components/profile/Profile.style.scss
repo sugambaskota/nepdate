@@ -27,12 +27,23 @@
     align-items: center;
   }
 
+  .liked-btn-info {
+    height: 1.7rem;
+    padding: 0 0.5rem;
+    margin-right: 1rem;
+    border-radius: 0.1rem;
+    cursor: default;
+    font-size: 0.9rem;
+  }
+
   .liked-btn {
     height: 1.7rem;
     padding: 0 0.5rem;
-    border-radius: 0.2rem;
+    border-radius: 0.1rem;
     margin-right: 1rem;
-    background-color: rgb(57, 197, 57);
+    background-color: seagreen;
+    color: #fff;
+    font-size: 0.9rem;
   }
 
   .liked-btn-loading {

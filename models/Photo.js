@@ -1,15 +1,15 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const PhotoSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "user",
+    ref: 'user',
   },
-  name: {
+  path: {
     type: String,
     required: true,
   },
 });
 
-module.exports = Photo = mongoose.model("photo", PhotoSchema);
+module.exports = Photo = mongoose.model('photo', PhotoSchema);

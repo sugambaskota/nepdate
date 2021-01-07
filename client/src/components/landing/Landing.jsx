@@ -12,9 +12,22 @@ const Landing = ({ isAuthenticated }) => {
 
   return (
     <div className='landing-container'>
-      <h2 className='welcome-text'>Welcome to NepDate</h2>
-      <Link to='/login'>Login</Link>
-      <Link to='/register'>Register</Link>
+      <div className='dark-overlay'>
+        <div className='landing-container-inner'>
+          <h1 className='landing-title'>NepDate</h1>
+          <p className='landing-desc'>
+            Register and find your matching partner now!
+          </p>
+          <div className='auth-btns'>
+            <Link to='/register' className='auth-btn register-btn'>
+              Register
+            </Link>
+            <Link to='/login' className='auth-btn login-btn'>
+              Login
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

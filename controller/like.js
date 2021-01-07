@@ -1,5 +1,4 @@
 const Like = require('../models/Like');
-const getPublicPath = require('../utils/getPublicPath');
 const { likeForOutDto } = require('../dto/like_dto');
 
 exports.getLikers = async (req, res) => {
@@ -7,7 +6,7 @@ exports.getLikers = async (req, res) => {
     const likes = await Like.find({
       likee: req.user.id,
     }).populate('liker');
-    let likeForOut = likeForOutDto(likes, true, getPublicPath(req));
+    let likeForOut = likeForOutDto(likes, true);
     res.json(likeForOut);
   } catch (err) {
     console.error(err.message);
@@ -26,7 +25,7 @@ exports.getLiked = async (req, res) => {
     const likes = await Like.find({
       liker: req.user.id,
     }).populate('likee');
-    let likeForOut = likeForOutDto(likes, false, getPublicPath(req));
+    let likeForOut = likeForOutDto(likes, false);
     res.json(likeForOut);
   } catch (err) {
     console.error(err.message);
