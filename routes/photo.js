@@ -18,8 +18,8 @@ const storage = new CloudinaryStorage({
   params: {
     format: async (req, file) => 'png',
     transformation: {
-      width: 250,
-      height: 250,
+      width: 400,
+      height: 400,
       crop: 'fill',
     },
   },
