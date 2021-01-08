@@ -157,7 +157,7 @@ export const EditProfile = ({
             </p>
           </div>
           <div className='main-detail-item'>
-            <label className='main-details-label'>Last active:</label>
+            <label className='main-details-label'>Last login:</label>
             <p>{moment(profile.user.lastActive).fromNow()}</p>
           </div>
           <div className='main-detail-item'>
