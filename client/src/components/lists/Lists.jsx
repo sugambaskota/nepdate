@@ -33,18 +33,24 @@ export const Lists = ({
 
   const determineTabContent = () => {
     if (tabActive === 'likers') {
-      return (
+      return likers && likers.length > 0 ? (
         <Fragment>
-          {likers &&
-            likers.map((liker) => <MemberCard key={liker.id} user={liker} />)}
+          {likers.map((liker) => (
+            <MemberCard key={liker.id} user={liker} />
+          ))}
         </Fragment>
+      ) : (
+        <h3 className='likers-not-found'>Sorry, no likers found!</h3>
       );
     } else {
-      return (
+      return liked && liked.length > 0 ? (
         <Fragment>
-          {liked &&
-            liked.map((liked) => <MemberCard key={liked.id} user={liked} />)}
+          {liked.map((liked) => (
+            <MemberCard key={liked.id} user={liked} />
+          ))}
         </Fragment>
+      ) : (
+        <h3 className='liked-not-found'>You have not liked anyone yet!</h3>
       );
     }
   };

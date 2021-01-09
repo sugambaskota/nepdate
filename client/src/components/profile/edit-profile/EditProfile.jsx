@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -9,12 +9,15 @@ import EditPrimaryDetails from './edit-primary-details/EditPrimaryDetails';
 import EditPhotos from './edit-photos/EditPhotos';
 import Spinner from '../../layout/spinner/Spinner';
 import { getCurrentUserProfile, updateProfile } from '../../../actions/profile';
+import { uploadDp } from '../../../actions/photo';
 
 export const EditProfile = ({
   history,
   profile: { profile, loading },
+  photo,
   getCurrentUserProfile,
   updateProfile,
+  uploadDp,
 }) => {
   const [formData, setFormData] = useState({
     description: '',
@@ -25,6 +28,8 @@ export const EditProfile = ({
   });
 
   const [tabActive, setTabActive] = useState('edit-details');
+
+  const dpChangeInputRef = useRef(null);
 
   useEffect(() => {
     getCurrentUserProfile();
@@ -47,6 +52,14 @@ export const EditProfile = ({
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const onFilePickedForDp = (e) => {
+    if (!e.target.files || e.target.files.length < 1) {
+      return;
+    }
+    const photo = e.target.files[0];
+    uploadDp(photo);
   };
 
   const onSubmit = (e) => {
@@ -141,7 +154,23 @@ export const EditProfile = ({
     <div className='edit-profile-container'>
       <div className='intro general-intro'>
         <div className='main-image'>
-          <img src={profile.user.dp} alt='' />
+          <img src={profile.user.dp} alt='dp of user' />
+          <div className='change-dp-portion'>
+            {photo.loading ? (
+              <i className='fa fa-refresh fa-spin loading-i' />
+            ) : (
+              <i
+                className='fa fa-edit fa-lg'
+                onClick={() => dpChangeInputRef.current.click()}
+              />
+            )}
+            <input
+              type='file'
+              className='change-dp-input'
+              onChange={onFilePickedForDp}
+              ref={dpChangeInputRef}
+            />
+          </div>
         </div>
         <div className='main-details'>
           <div className='main-detail-item'>
@@ -201,17 +230,21 @@ export const EditProfile = ({
 
 EditProfile.propTypes = {
   profile: PropTypes.object.isRequired,
+  photo: PropTypes.object.isRequired,
   getCurrentUserProfile: PropTypes.func.isRequired,
   updateProfile: PropTypes.func.isRequired,
+  uploadDp: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   profile: state.profile,
+  photo: state.photo,
 });
 
 const mapDispatchToProps = {
   getCurrentUserProfile,
   updateProfile,
+  uploadDp,
 };
 
 export default connect(

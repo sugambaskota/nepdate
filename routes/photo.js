@@ -9,6 +9,7 @@ const {
   getPhotosByUserId,
   setPhotoAsMain,
   deletePhoto,
+  uploadDp,
   uploadPhoto,
   uploadPhotos,
 } = require('../controller/photo');
@@ -40,6 +41,9 @@ const upload = multer({
       cb(err);
     }
   },
+  limits: {
+    fileSize: 1024 * 1024, // 1MB
+  },
 });
 
 // @route GET /api/photos
@@ -61,6 +65,11 @@ router.delete('/delete', isAuth, deletePhoto);
 // @desc Get all photos of a user by id
 // @access Public
 router.get('/:user_id', isAuth, getPhotosByUserId);
+
+// @route POST /api/photos/upload/dp
+// @desc Upload dp for current user
+// @access Private
+router.post('/upload/dp', isAuth, upload.single('photo'), uploadDp);
 
 // @route POST /api/photos/upload/single
 // @desc Upload single photo for current user

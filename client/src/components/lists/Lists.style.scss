@@ -25,6 +25,11 @@
   grid-gap: 1rem;
 }
 
+.likers-not-found,
+.liked-not-found {
+  text-align: center;
+}
+
 @media (min-width: 576px) {
   .likers-liked-content {
     grid-template-columns: repeat(2, 1fr);

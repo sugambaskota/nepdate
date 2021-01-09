@@ -1,6 +1,7 @@
 import {
   SET_PHOTO_LOADING,
   GET_PHOTOS,
+  UPLOAD_DP,
   DELETE_PHOTO,
   PHOTOS_ERROR,
   CLEAR_PHOTOS,
@@ -30,6 +31,15 @@ export default function (state = initialState, action) {
         ...state,
         loading: false,
         photos: payload,
+      };
+    case UPLOAD_DP:
+      return {
+        ...state,
+        loading: false,
+        photos:
+          state.photos && state.photos.length > 0
+            ? [...state.photos, payload]
+            : [payload],
       };
     case DELETE_PHOTO:
       return {

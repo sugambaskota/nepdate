@@ -1,7 +1,7 @@
 const Photo = require('../models/Photo');
 const User = require('../models/User');
 const cloudinary = require('../config/cloudinary');
-const { photosForOutDto } = require('../dto/photo_dto');
+const { photoForOutDto, photosForOutDto } = require('../dto/photo_dto');
 
 const getPhotosOfCurrentUser = async (req, res) => {
   try {
@@ -96,6 +96,41 @@ const deletePhoto = async (req, res) => {
   }
 };
 
+const uploadDp = async (req, res) => {
+  try {
+    if (req.file) {
+      const { path } = req.file;
+      const photo = new Photo({
+        owner: req.user._id,
+        path,
+      });
+      await photo.save();
+      await User.findByIdAndUpdate(req.user.id, {
+        dp: path,
+      });
+      let photoForOut = photoForOutDto(photo);
+      res.json(photoForOut);
+    } else {
+      res.status(400).json({
+        errors: [
+          {
+            msg: 'File not received by server',
+          },
+        ],
+      });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({
+      errors: [
+        {
+          msg: 'Server error...',
+        },
+      ],
+    });
+  }
+};
+
 const uploadPhoto = async (req, res) => {
   try {
     if (req.file) {
@@ -173,6 +208,7 @@ module.exports = {
   getPhotosByUserId,
   setPhotoAsMain,
   deletePhoto,
+  uploadDp,
   uploadPhoto,
   uploadPhotos,
 };

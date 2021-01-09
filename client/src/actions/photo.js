@@ -5,6 +5,7 @@ import {
   SET_PHOTO_LOADING,
   GET_PHOTOS,
   SET_PHOTO_MAIN,
+  UPLOAD_DP,
   DELETE_PHOTO,
   PHOTOS_ERROR,
   CLEAR_PHOTOS,
@@ -78,6 +79,42 @@ export const deletePhoto = (photo_path) => async (dispatch) => {
       payload: photo_path,
     });
   } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+    }
+  }
+};
+
+export const uploadDp = (photo) => async (dispatch) => {
+  try {
+    dispatch(setLoading());
+
+    let formData = new FormData();
+
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+
+    formData.append('photo', photo);
+
+    const res = await axios.post('/api/photos/upload/dp', formData, config);
+    dispatch({
+      type: SET_PHOTO_MAIN,
+      payload: res.data.path,
+    });
+    dispatch({
+      type: UPLOAD_DP,
+      payload: res.data,
+    });
+    dispatch(setAlert('Main photo updated successfully!', 'success'));
+  } catch (err) {
+    dispatch({
+      type: PHOTOS_ERROR,
+    });
     const errors = err.response.data.errors;
 
     if (errors) {

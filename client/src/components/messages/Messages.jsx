@@ -38,7 +38,7 @@ export const Messages = ({
     </Fragment>
   ) : (
     <Fragment>
-      <h2>Your messages box is empty!</h2>
+      <h3 className='msg-not-found'>Your messages box is empty!</h3>
     </Fragment>
   );
 };

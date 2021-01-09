@@ -49,9 +49,21 @@ app.use((req, res) => {
     ],
   });
 });
+
+//handle global errors
 app.use((err, req, res, next) => {
   if (err) {
     console.error(err.message);
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({
+        errors: [
+          {
+            msg: 'Sorry, you can upload images with max size 1MB only!',
+          },
+        ],
+      });
+    }
+
     if (err.type === 'multer-file-not-acceptable') {
       return res.status(400).json({
         errors: [
