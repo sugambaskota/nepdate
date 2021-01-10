@@ -1,5 +1,6 @@
 import {
   SET_PHOTO_LOADING,
+  SET_DP_LOADING,
   GET_PHOTOS,
   UPLOAD_DP,
   DELETE_PHOTO,
@@ -10,6 +11,7 @@ import {
 const initialState = {
   photos: null,
   loading: false,
+  dp_loading: false,
 };
 
 export default function (state = initialState, action) {
@@ -21,6 +23,11 @@ export default function (state = initialState, action) {
         ...state,
         loading: true,
       };
+    case SET_DP_LOADING:
+      return {
+        ...state,
+        dp_loading: true,
+      }
     case CLEAR_PHOTOS:
       return {
         ...state,
@@ -35,7 +42,7 @@ export default function (state = initialState, action) {
     case UPLOAD_DP:
       return {
         ...state,
-        loading: false,
+        dp_loading: false,
         photos:
           state.photos && state.photos.length > 0
             ? [...state.photos, payload]
@@ -51,6 +58,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: false,
+        dp_loading: false
       };
     default:
       return state;

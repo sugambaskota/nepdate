@@ -3,6 +3,7 @@ import axios from 'axios';
 import { setAlert } from './alert';
 import {
   SET_PHOTO_LOADING,
+  SET_DP_LOADING,
   GET_PHOTOS,
   SET_PHOTO_MAIN,
   UPLOAD_DP,
@@ -89,7 +90,7 @@ export const deletePhoto = (photo_path) => async (dispatch) => {
 
 export const uploadDp = (photo) => async (dispatch) => {
   try {
-    dispatch(setLoading());
+    dispatch(setDpLoading());
 
     let formData = new FormData();
 
@@ -145,6 +146,9 @@ export const uploadPhotos = (photos) => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
+    dispatch({
+      type: PHOTOS_ERROR,
+    });
     const errors = err.response.data.errors;
 
     if (errors) {
@@ -158,6 +162,12 @@ const setLoading = () => {
     type: SET_PHOTO_LOADING,
   };
 };
+
+const setDpLoading = () => {
+  return {
+    type: SET_DP_LOADING
+  }
+}
 
 const clearPhotos = () => {
   return {

@@ -14,7 +14,7 @@ import { uploadDp } from '../../../actions/photo';
 export const EditProfile = ({
   history,
   profile: { profile, loading },
-  photo,
+  photo: { dp_loading },
   getCurrentUserProfile,
   updateProfile,
   uploadDp,
@@ -156,7 +156,7 @@ export const EditProfile = ({
         <div className='main-image'>
           <img src={profile.user.dp} alt='dp of user' />
           <div className='change-dp-portion'>
-            {photo.loading ? (
+            {dp_loading ? (
               <i className='fa fa-refresh fa-spin loading-i' />
             ) : (
               <i

@@ -58,7 +58,7 @@ app.use((err, req, res, next) => {
       return res.status(400).json({
         errors: [
           {
-            msg: 'Sorry, you can upload images with max size 1MB only!',
+            msg: 'Sorry, you can upload images with max size 3MB only!',
           },
         ],
       });

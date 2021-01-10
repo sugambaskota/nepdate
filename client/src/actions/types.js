@@ -25,6 +25,7 @@ export const USERS_ERROR = 'USERS_ERROR';
 export const CLEAR_USERS = 'CLEAR_USERS';
 
 export const SET_PHOTO_LOADING = 'SET_PHOTO_LOADING';
+export const SET_DP_LOADING = 'SET_DP_LOADING';
 export const GET_PHOTOS = 'GET_PHOTOS';
 export const SET_PHOTO_MAIN = 'SET_PHOTO_MAIN';
 export const UPLOAD_DP = 'UPLOAD_DP';
