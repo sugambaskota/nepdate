@@ -1,6 +1,6 @@
 # nepdate
 
-### A dating web app
+A dating web app
 
 #### Demo ⤵
 
