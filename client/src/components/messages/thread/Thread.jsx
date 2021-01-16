@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import './Thread.style.scss';
-import { getMessageThread, sendMessage } from '../../../actions/message';
+import socket from '../../../utils/socket';
+import { getMessageThread, sendMessage, receivePrivateMessage } from '../../../actions/message';
 import Spinner from '../../layout/spinner/Spinner';
 import ThreadCard from './thread-card/ThreadCard';
 
@@ -13,6 +14,7 @@ export const Thread = ({
   auth: { user },
   getMessageThread,
   sendMessage,
+  receivePrivateMessage
 }) => {
   const [chatMsg, setChatMsg] = useState('');
   const scrollDivRef = useRef(null);
@@ -21,18 +23,15 @@ export const Thread = ({
     getMessageThread(match.params.user_id);
   }, [getMessageThread, match.params.user_id]);
 
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     getMessageThread(match.params.user_id);
-  //   }, 5000);
-  //   return () => {
-  //     clearInterval()
-  //   }
-  // }, []);
-
   useEffect(() => {
     scrollToBottom();
   }, [thread]);
+
+  useEffect(() => {
+    socket.on("privateMessage", (message) => {
+      receivePrivateMessage(message);
+    });
+  }, [receivePrivateMessage]);
 
   const scrollToBottom = () => {
     scrollDivRef.current &&
@@ -93,6 +92,7 @@ Thread.propTypes = {
   auth: PropTypes.object.isRequired,
   getMessageThread: PropTypes.func.isRequired,
   sendMessage: PropTypes.func.isRequired,
+  receivePrivateMessage: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -103,6 +103,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getMessageThread,
   sendMessage,
+  receivePrivateMessage
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Thread);

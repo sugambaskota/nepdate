@@ -1,30 +1,31 @@
-const mongoose = require('mongoose');
-const { validationResult } = require('express-validator');
+const mongoose = require("mongoose");
+const { validationResult } = require("express-validator");
 
-const Message = require('../models/Message');
-const Like = require('../models/Like');
-const { messageForOutDto, messagesForOutDto } = require('../dto/message_dto');
+const Message = require("../models/Message");
+const Like = require("../models/Like");
+const { messageForOutDto, messagesForOutDto } = require("../dto/message_dto");
+const { ioUsers } = require("../utils/io");
 
 exports.getMessages = async (req, res) => {
   try {
-    let boxtype = '';
-    req.query.container === 'outbox'
-      ? (boxtype = 'outbox')
-      : (boxtype = 'inbox');
-    if (boxtype === 'outbox') {
+    let boxtype = "";
+    req.query.container === "outbox"
+      ? (boxtype = "outbox")
+      : (boxtype = "inbox");
+    if (boxtype === "outbox") {
       let messages = await Message.find({
         sender: req.user.id,
       })
-        .populate('sender')
-        .populate('receiver');
+        .populate("sender")
+        .populate("receiver");
       const messagesForOut = messagesForOutDto(messages);
       return res.json(messagesForOut);
     }
     let messages = await Message.find({
       receiver: req.user.id,
     })
-      .populate('sender')
-      .populate('receiver');
+      .populate("sender")
+      .populate("receiver");
     const messagesForOut = messagesForOutDto(messages);
     res.json(messagesForOut);
   } catch (err) {
@@ -32,7 +33,7 @@ exports.getMessages = async (req, res) => {
     res.status(500).json({
       errors: [
         {
-          msg: 'Server error...',
+          msg: "Server error...",
         },
       ],
     });
@@ -51,8 +52,8 @@ exports.getMessagesThread = async (req, res) => {
       },
     })
       .sort({ date: 1 })
-      .populate('sender')
-      .populate('receiver');
+      .populate("sender")
+      .populate("receiver");
     const threadForOut = messagesForOutDto(thread);
     res.json(threadForOut);
   } catch (err) {
@@ -60,7 +61,7 @@ exports.getMessagesThread = async (req, res) => {
     res.status(500).json({
       errors: [
         {
-          msg: 'Server error...',
+          msg: "Server error...",
         },
       ],
     });
@@ -89,35 +90,35 @@ exports.getMessagesThreads = async (req, res) => {
       },
       {
         $lookup: {
-          from: 'users',
-          localField: 'sender',
-          foreignField: '_id',
-          as: 'from',
+          from: "users",
+          localField: "sender",
+          foreignField: "_id",
+          as: "from",
         },
       },
       {
-        $unwind: '$from',
+        $unwind: "$from",
       },
       {
         $lookup: {
-          from: 'users',
-          localField: 'receiver',
-          foreignField: '_id',
-          as: 'to',
+          from: "users",
+          localField: "receiver",
+          foreignField: "_id",
+          as: "to",
         },
       },
       {
-        $unwind: '$to',
+        $unwind: "$to",
       },
       {
         $group: {
-          _id: '$conversation_id',
-          sender: { $last: '$from' },
-          receiver: { $last: '$to' },
-          text: { $last: '$text' },
-          date: { $last: '$date' },
-          isread: { $last: '$isread' },
-          dateread: { $last: '$dateread' },
+          _id: "$conversation_id",
+          sender: { $last: "$from" },
+          receiver: { $last: "$to" },
+          text: { $last: "$text" },
+          date: { $last: "$date" },
+          isread: { $last: "$isread" },
+          dateread: { $last: "$dateread" },
         },
       },
       {
@@ -147,11 +148,11 @@ exports.getMessagesThreads = async (req, res) => {
       },
       {
         $group: {
-          _id: '$conversation_id',
+          _id: "$conversation_id",
         },
       },
       {
-        $count: 'count',
+        $count: "count",
       },
     ]);
     const totalCount = forCount && forCount.length > 0 ? forCount[0].count : 0;
@@ -163,7 +164,7 @@ exports.getMessagesThreads = async (req, res) => {
       totalCount,
     });
     const threadsForOut = messagesForOutDto(threads);
-    res.setHeader('Pagination', paginationInfo);
+    res.setHeader("Pagination", paginationInfo);
 
     res.json(threadsForOut);
   } catch (err) {
@@ -171,7 +172,7 @@ exports.getMessagesThreads = async (req, res) => {
     res.status(500).json({
       errors: [
         {
-          msg: 'Server error...',
+          msg: "Server error...",
         },
       ],
     });
@@ -208,7 +209,7 @@ exports.sendMessage = async (req, res) => {
 
     const { text } = req.body;
     const receiver = req.params.receiver_id;
-    const conversation_id = [req.user.id, receiver].sort().join('.');
+    const conversation_id = [req.user.id, receiver].sort().join(".");
 
     const message = new Message({
       sender: req.user.id,
@@ -220,10 +221,15 @@ exports.sendMessage = async (req, res) => {
     await message.save();
 
     const newMessage = await Message.findById(message._id)
-      .populate('sender')
-      .populate('receiver');
+      .populate("sender")
+      .populate("receiver");
 
     const messageForOut = messageForOutDto(newMessage);
+
+    //check if receiver is online
+    if (messageForOut.receiver.id in ioUsers) {
+      ioUsers[messageForOut.receiver.id].emit("privateMessage", messageForOut);
+    }
 
     res.json(messageForOut);
   } catch (err) {
@@ -231,7 +237,7 @@ exports.sendMessage = async (req, res) => {
     res.status(500).json({
       errors: [
         {
-          msg: 'Server error...',
+          msg: "Server error...",
         },
       ],
     });

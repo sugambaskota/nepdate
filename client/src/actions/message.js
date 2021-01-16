@@ -1,14 +1,15 @@
-import axios from 'axios';
+import axios from "axios";
 
-import { setAlert } from '../actions/alert';
+import { setAlert } from "../actions/alert";
 import {
   SET_MESSAGE_LOADING,
   GET_MESSAGES,
   GET_MESSAGE_THREAD,
   SEND_MESSAGE,
+  RECEIVE_PRIVATE_MESSAGE,
   MESSAGES_ERROR,
   CLEAR_MESSAGES,
-} from './types';
+} from "./types";
 
 export const getMessages = (page = 1, size = 5) => async (dispatch) => {
   try {
@@ -27,7 +28,7 @@ export const getMessages = (page = 1, size = 5) => async (dispatch) => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
   }
 };
@@ -47,7 +48,7 @@ export const getMessageThread = (userId) => async (dispatch) => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
   }
 };
@@ -55,7 +56,7 @@ export const getMessageThread = (userId) => async (dispatch) => {
 export const sendMessage = (receiverId, text) => async (dispatch) => {
   const config = {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   };
 
@@ -76,9 +77,16 @@ export const sendMessage = (receiverId, text) => async (dispatch) => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
   }
+};
+
+export const receivePrivateMessage = (message) => (dispatch) => {
+  dispatch({
+    type: RECEIVE_PRIVATE_MESSAGE,
+    payload: message,
+  });
 };
 
 const setLoading = () => {

@@ -1,7 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 
-import { setAlert } from './alert';
-import setAuthToken from '../utils/setAuthToken';
+import { setAlert } from "./alert";
+import setAuthToken from "../utils/setAuthToken";
+import socket from "../utils/socket";
 import {
   SET_AUTH_LOADING,
   REGISTER_SUCCESS,
@@ -13,7 +14,7 @@ import {
   AUTH_ERROR,
   CLEAR_AUTH,
   LOGOUT,
-} from './types';
+} from "./types";
 
 // Load User
 export const loadUser = () => async (dispatch) => {
@@ -23,11 +24,12 @@ export const loadUser = () => async (dispatch) => {
 
   try {
     dispatch(setLoading());
-    const res = await axios.get('/api/auth');
+    const res = await axios.get("/api/auth");
     dispatch({
       type: USER_LOADED,
       payload: res.data,
     });
+    socket.emit("online", res.data.user.id);
   } catch (err) {
     dispatch({
       type: AUTH_ERROR,
@@ -47,7 +49,7 @@ export const register = ({
 }) => async (dispatch) => {
   const config = {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   };
 
@@ -63,7 +65,7 @@ export const register = ({
 
   try {
     dispatch(setLoading());
-    const res = await axios.post('/api/users', body, config);
+    const res = await axios.post("/api/users", body, config);
 
     dispatch({
       type: REGISTER_SUCCESS,
@@ -75,7 +77,7 @@ export const register = ({
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
 
     dispatch({
@@ -88,7 +90,7 @@ export const register = ({
 export const login = (email, password) => async (dispatch) => {
   const config = {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   };
 
@@ -96,7 +98,7 @@ export const login = (email, password) => async (dispatch) => {
 
   try {
     dispatch(setLoading());
-    const res = await axios.post('/api/auth', body, config);
+    const res = await axios.post("/api/auth", body, config);
 
     dispatch({
       type: LOGIN_SUCCESS,
@@ -108,7 +110,7 @@ export const login = (email, password) => async (dispatch) => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
 
     dispatch({
@@ -122,7 +124,7 @@ export const updateUser = (formData, history) => async (dispatch) => {
   try {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
 
@@ -135,21 +137,21 @@ export const updateUser = (formData, history) => async (dispatch) => {
     });
 
     dispatch(setLoading());
-    const res = await axios.put('/api/auth', body, config);
+    const res = await axios.put("/api/auth", body, config);
 
     dispatch({
       type: UPDATE_USER,
       payload: res.data,
     });
 
-    history.push('/profile');
+    history.push("/profile");
 
-    dispatch(setAlert('Details updated successfully', 'success'));
+    dispatch(setAlert("Details updated successfully", "success"));
   } catch (err) {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
   }
 };
@@ -160,6 +162,7 @@ export const logout = () => (dispatch) => {
   dispatch({
     type: LOGOUT,
   });
+  socket.disconnect();
 };
 
 // Set loading

@@ -3,9 +3,10 @@ import {
   GET_MESSAGES,
   GET_MESSAGE_THREAD,
   SEND_MESSAGE,
+  RECEIVE_PRIVATE_MESSAGE,
   MESSAGES_ERROR,
   CLEAR_MESSAGES,
-} from '../actions/types';
+} from "../actions/types";
 
 const initialState = {
   messages: null,
@@ -48,6 +49,11 @@ export default function (state = initialState, action) {
         ...state,
         loading: false,
         thread: [...state.thread, payload],
+      };
+    case RECEIVE_PRIVATE_MESSAGE:
+      return {
+        ...state,
+        thread: state.thread ? [...state.thread, payload] : [payload],
       };
     case MESSAGES_ERROR:
       return {
